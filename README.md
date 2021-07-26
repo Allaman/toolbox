@@ -16,6 +16,10 @@ Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
 
 [ES-query](es-query) performs Elasticsearch search queries via Python and Golang
 
+# Makefiles
+
+[Makefile](makefile) a collection of Makefiles I use in my projects.
+
 # Pushgateway
 
 [Pushgateway](pushgateway) demonstrates how to push metrics to Prometheus Pushgateway via Golang and bash
