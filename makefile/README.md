@@ -1,4 +1,4 @@
 # Makefiles
 
 -   [Golang](golang)
--   [Kustomize](Kustomize)
+-   [Kustomize](kustomize)
