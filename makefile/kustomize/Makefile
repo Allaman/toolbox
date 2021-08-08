@@ -36,7 +36,7 @@ analyze-prod: req-kustomize req-kube-linter ## Static analysis on production man
 diff: req-dyff ## Diff prod and stg manifests
 	@$(BUILD) staging/ > stg.yaml
 	@$(BUILD) production/ > prod.yaml
-	@dyff between stg.yaml prod.yaml
+	@dyff between stg.yaml prod.yaml || true
 	@rm stg.yaml prod.yaml
 
 req-kustomize:
