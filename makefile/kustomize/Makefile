@@ -26,10 +26,18 @@ val-prod: req-kubeval req-kustomize ## Validate staging Kubernetes manifests - d
 
 analyze-stg: req-kustomize req-kube-linter ## Static analysis on staging manifests - do not apply them
 	@$(BUILD) ${STAGING_PATH} > stg.yaml
-	@kube-linter lint stg.yaml
+	@kube-linter lint stg.yaml || true
+	@rm stg.yaml
 analyze-prod: req-kustomize req-kube-linter ## Static analysis on production manifests - do not apply them
 	@$(BUILD) ${PRODUCTION_PATH} > prod.yaml
-	@kube-linter lint prod.yaml
+	@kube-linter lint prod.yaml || true
+	@rm prod.yaml
+
+diff: req-dyff ## Diff prod and stg manifests
+	@$(BUILD) staging/ > stg.yaml
+	@$(BUILD) production/ > prod.yaml
+	@dyff between stg.yaml prod.yaml
+	@rm stg.yaml prod.yaml
 
 req-kustomize:
 	@command -v kustomize >/dev/null 2>&1 || { echo >&2 "require kustomize"; exit 1; }
@@ -37,3 +45,5 @@ req-kubeval:
 	@command -v kubeval >/dev/null 2>&1 || { echo >&2 "require kubeval"; exit 1; }
 req-kube-linter:
 	@command -v kube-linter >/dev/null 2>&1 || { echo >&2 "require kube-linter"; exit 1; }
+req-dyff:
+	@command -v dyff >/dev/null 2>&1 || { echo >&2 "require dyff"; exit 1; }
