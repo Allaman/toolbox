@@ -8,6 +8,10 @@ Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
 
 [AWS-Data-API](aws-data-api) checks the connectivity to an Aurora Serverless Database by using the Go AWS SDK.
 
+# AWS-Route53-Records
+
+[AWS-Route53-Records](aws-route53-records) prints AWS Route53 records of a specified hosted zone ID by using the Go AWS SDK.
+
 # ES-Stats
 
 [ES-stats](es-stats) prints various info about an Elasticsearch cluster via Golang.
