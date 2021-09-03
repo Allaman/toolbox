@@ -20,9 +20,9 @@ Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
 
 [ES-query](es-query) performs Elasticsearch search queries via Python and Golang
 
-## HTTP CLient
+## HTTP-Client
 
-Different implementations of HTTP Clients
+[HTTP-Client](http-client) a collection of different implementations of HTTP Clients
 
 ## Makefiles
 
