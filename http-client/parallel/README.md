@@ -1,3 +1,3 @@
 # Parallel HTTP Calls
 
-Demonstrating a parallel number of simple `GET` requests via Go routines.
+Demonstrating a number of parallel `GET` requests via Go routines.
