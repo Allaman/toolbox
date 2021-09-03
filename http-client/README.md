@@ -1,4 +1,4 @@
 # HTTP Client
 
-- [Parallel](#parallel)
-- [Simple](#simple)
+- [Parallel](parallel)
+- [Simple](imple)
