@@ -3,8 +3,8 @@ help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 .DEFAULT_GOAL := help
 
-STAGING_PATH:=staging/
-PRODUCTION_PATH:=production/
+DIFFCMD:=nvim -d
+
 EDITOR:=$(shell type -p nvim || echo vim)
 ifneq (,$(findstring vim,$(EDITOR)))
 	EDITOR += -c 'set syntax=yaml' -
@@ -15,28 +15,28 @@ endif
 BUILD:=kustomize build
 
 check-stg: req-kustomize ## Generate staging manifests - do not apply them
-	@$(BUILD) ${STAGING_PATH} | $(EDITOR)
+	@$(BUILD) staging/ | $(EDITOR)
 check-prod: req-kustomize ## Generate production manifests - do not apply them
-	@$(BUILD) ${PRODUCTION_PATH} | $(EDITOR)
+	@$(BUILD) production/ | $(EDITOR)
 
 val-stg: req-kubeval req-kustomize ## Validate staging Kubernetes manifests - do not apply them
-	@$(BUILD) ${STAGING_PATH} | kubeval --strict --ignore-missing-schemas
+	@$(BUILD) staging/ | kubeval --strict --ignore-missing-schemas
 val-prod: req-kubeval req-kustomize ## Validate staging Kubernetes manifests - do not apply them
-	@$(BUILD) ${PRODUCTION_PATH} | kubeval --strict --ignore-missing-schemas
+	@$(BUILD) production/ | kubeval --strict --ignore-missing-schemas
 
 analyze-stg: req-kustomize req-kube-linter ## Static analysis on staging manifests - do not apply them
-	@$(BUILD) ${STAGING_PATH} > stg.yaml
+	@$(BUILD) staging/ > stg.yaml
 	@kube-linter lint stg.yaml || true
 	@rm stg.yaml
 analyze-prod: req-kustomize req-kube-linter ## Static analysis on production manifests - do not apply them
-	@$(BUILD) ${PRODUCTION_PATH} > prod.yaml
+	@$(BUILD) production/ > prod.yaml
 	@kube-linter lint prod.yaml || true
 	@rm prod.yaml
 
-diff: req-dyff ## Diff prod and stg manifests
+diff: ## Diff prod and stg manifests
 	@$(BUILD) staging/ > stg.yaml
 	@$(BUILD) production/ > prod.yaml
-	@dyff between stg.yaml prod.yaml || true
+	@$(DIFFCMD) stg.yaml prod.yaml
 	@rm stg.yaml prod.yaml
 
 req-kustomize:
@@ -45,5 +45,4 @@ req-kubeval:
 	@command -v kubeval >/dev/null 2>&1 || { echo >&2 "require kubeval"; exit 1; }
 req-kube-linter:
 	@command -v kube-linter >/dev/null 2>&1 || { echo >&2 "require kube-linter"; exit 1; }
-req-dyff:
-	@command -v dyff >/dev/null 2>&1 || { echo >&2 "require dyff"; exit 1; }
+
