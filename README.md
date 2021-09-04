@@ -1,6 +1,8 @@
-# Utils
+# My Toolbox
 
-This is a collection of handy scripts/programs that helped me in my DevOps/Cloud/System-Engineering tasks.
+Every craftsman cultivates his own personal toolbox specifically selected by his special needs in order to fulfill his daily tasks with a maximum of efficiency and quality.
+
+This is my DevOps toolbox: a collection of handy stuff that helped me in my DevOps/Cloud/System-Engineering tasks.
 
 Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
 
