@@ -9,7 +9,6 @@ index = "kubernetes_cluster-*"
 
 client = Elasticsearch(host, retry_on_timeout=True, max_retries=3, timeout=60, request_timeout=60)
 
-
 body = {
         "_source": ["time","log","kubernetes.pod_name","kubernetes.host"], # only return those keys from search result
         "query": {
@@ -57,7 +56,6 @@ def scroll(es, index, body, scroll, size, **kw):
 try:
     info = json.dumps(client.info(), indent=4)
     # print ("Elasticsearch client info():", info)
-
 except exceptions.ConnectionError as err:
     print ("\nElasticsearch info() ERROR:", err)
     print ("\nThe client host:", host, "is invalid or cluster is not running")

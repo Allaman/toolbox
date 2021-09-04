@@ -108,7 +108,7 @@ func createCSV(json *string) {
 		if err := csvWriter.Error(); err != nil {
 			log.Fatalln("error writing csv:", err)
 		}
-		return false // keep iterating
+		return false // to keep iterating set this to true
 	})
 	csvWriter.Flush()
 }
