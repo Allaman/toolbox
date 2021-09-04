@@ -4,7 +4,7 @@
 from elasticsearch import Elasticsearch, exceptions
 import json
 
-host = ""
+host = "" # Elasticsearch host address
 index = "kubernetes_cluster-*"
 
 client = Elasticsearch(host, retry_on_timeout=True, max_retries=3, timeout=60, request_timeout=60)
