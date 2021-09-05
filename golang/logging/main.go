@@ -2,31 +2,26 @@ package main
 
 import (
 	"logging/logger"
+	"os"
 
 	"github.com/rs/zerolog"
 )
 
-var (
-	info  = true
-	debug = false
-	trace = false
-	error = false
-	fatal = false
-)
-
 func main() {
+	level := os.Args[1]
 	// Initialize global logger
-	if info {
+	switch level {
+	case "info":
 		logger.Log = logger.NewLogger(zerolog.InfoLevel)
-	} else if debug {
+	case "debug":
 		logger.Log = logger.NewLogger(zerolog.DebugLevel)
-	} else if trace {
+	case "trace":
 		logger.Log = logger.NewLogger(zerolog.TraceLevel)
-	} else if error {
+	case "error":
 		logger.Log = logger.NewLogger(zerolog.ErrorLevel)
-	} else if fatal {
+	case "fatal":
 		logger.Log = logger.NewLogger(zerolog.FatalLevel)
-	} else {
+	default:
 		panic("can not determine log level")
 	}
 	logger.Log.Info().Msgf("setting timeout to '%d'", 10)
