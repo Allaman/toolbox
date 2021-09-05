@@ -26,7 +26,8 @@ func main() {
 }
 
 var rootCmd = &cobra.Command{
-	Use: "Simple CLI",
+	Use:   "simple-cobra",
+	Short: "Server status and modify",
 }
 
 var vertUpCmd = &cobra.Command{
@@ -34,7 +35,7 @@ var vertUpCmd = &cobra.Command{
 	Short: "Vertical Upscale",
 	Long:  `Do a vertical upscaling by increasing memory and cpu`,
 	Run: func(cmd *cobra.Command, args []string) {
-		VerticalScaleUp(cores, memory)
+		verticalScaleUp(cores, memory)
 	},
 }
 
@@ -43,14 +44,14 @@ var statusCmd = &cobra.Command{
 	Short: "Get status",
 	Long:  `Prints the current status of the system`,
 	Run: func(cmd *cobra.Command, args []string) {
-		Status()
+		status()
 	},
 }
 
-func Status() {
+func status() {
 	fmt.Println("Hello Status")
 }
 
-func VerticalScaleUp(mem, cpu int) {
+func verticalScaleUp(mem, cpu int) {
 	fmt.Printf("Scaling up cpu to '%d' and memory to '%d'\n", cores, memory)
 }
