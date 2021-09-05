@@ -8,6 +8,9 @@ import (
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		panic("argument missing")
+	}
 	level := os.Args[1]
 	// Initialize global logger
 	switch level {
@@ -21,6 +24,7 @@ func main() {
 		logger.Log = logger.NewLogger(zerolog.ErrorLevel)
 	case "fatal":
 		logger.Log = logger.NewLogger(zerolog.FatalLevel)
+		logger.Log.Fatal().Msgf("setting timeout to '%d'", 10)
 	default:
 		panic("can not determine log level")
 	}
@@ -28,5 +32,4 @@ func main() {
 	logger.Log.Debug().Msgf("setting timeout to '%d'", 10)
 	logger.Log.Trace().Msgf("setting timeout to '%d'", 10)
 	logger.Log.Error().Msgf("setting timeout to '%d'", 10)
-	logger.Log.Fatal().Msgf("setting timeout to '%d'", 10)
 }
