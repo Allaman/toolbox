@@ -1,4 +1,4 @@
-module simple-cli
+module simple-cobra
 
 go 1.17
 
