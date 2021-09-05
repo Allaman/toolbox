@@ -1,10 +1,10 @@
-# My Toolbox
+# My Toolbox 🧰
 
 Every craftsman cultivates his own personal toolbox specifically selected by his special needs in order to fulfill his daily tasks with a maximum of efficiency and quality.
 
 This is my DevOps toolbox: a collection of handy stuff that helped me in my DevOps/Cloud/System-Engineering tasks.
 
-Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
+Use at your own risk. No sophisticated code. No scope on usability and UX. 🙂
 
 ## AWS-Data-API
 
@@ -20,7 +20,11 @@ Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
 
 ## ES-query
 
-[ES-query](es-query) performs Elasticsearch search queries via Python and Golang
+[ES-query](es-query) performs Elasticsearch search queries via Python and Golang.
+
+## Golang
+
+[Golang](golang) contains some general Go code I use in my tools.
 
 ## HTTP-Client
 
@@ -32,4 +36,4 @@ Use at your own risk. No sophisticated code. No scope on usability and UX 🙂
 
 ## Pushgateway
 
-[Pushgateway](pushgateway) demonstrates how to push metrics to Prometheus Pushgateway via Golang and bash
+[Pushgateway](pushgateway) demonstrates how to push metrics to Prometheus Pushgateway via Golang and bash.
