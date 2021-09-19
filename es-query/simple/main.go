@@ -37,6 +37,10 @@ func main() {
 	// 	},
 	// }
 
+	if index == "" {
+		log.Fatalln("index should not be empty")
+	}
+
 	body := aux.ConstructBodyFromQuery(query, size)
 
 	// Perform the search request.
