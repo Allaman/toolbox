@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	aux "github.com/allaman/toolbox/es-query/auxiliary"
@@ -12,7 +11,8 @@ import (
 func main() {
 	es := aux.NewESClient()
 
-	var index = "kubernetes_cluster*"
+	var index = "" // TODO:
+	var size = 100
 
 	// all documents within the last hour
 	var query = `"bool": {
@@ -29,7 +29,7 @@ func main() {
             ]
         }`
 
-	// all documents and alternative raw form of an query
+	// all documents in an alternative form for an query
 	// query := map[string]interface{}{
 	// 	"size": 2000,
 	// 	"query": map[string]interface{}{
@@ -37,7 +37,7 @@ func main() {
 	// 	},
 	// }
 
-	body := aux.ConstructBodyFromQuery(query, 100)
+	body := aux.ConstructBodyFromQuery(query, size)
 
 	// Perform the search request.
 	res, err := es.Search(
@@ -51,9 +51,6 @@ func main() {
 		log.Fatalf("Error getting response: %s", err)
 	}
 	defer res.Body.Close()
-	if res.IsError() {
-		fmt.Printf("err", res)
-	}
 
 	aux.CheckForESSearchResultError(res)
 
