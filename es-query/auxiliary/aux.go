@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/elastic/go-elasticsearch/v7"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/tidwall/gjson"
 )
 
@@ -76,7 +77,7 @@ func PrintStats(json *string) {
 // from https://kb.objectrocket.com/elasticsearch/how-to-construct-elasticsearch-queries-from-a-string-using-golang-550
 func ConstructBodyFromQuery(q string, size int) *strings.Reader {
 	// Build a body string from string passed to function
-	var body = `{"_source": ["time","log","kubernetes.pod_name","kubernetes.host"], "query": {`
+	var body = `{"query": {`
 	// Concatenate query string with string passed to method call
 	body = body + q
 	// Use the strconv.Itoa() method to convert int to string
@@ -95,4 +96,20 @@ func ConstructBodyFromQuery(q string, size int) *strings.Reader {
 	bodyReader := strings.NewReader(b.String())
 	// Return a *strings.Reader object
 	return bodyReader
+}
+
+func CheckForESSearchResultError(res *esapi.Response) {
+	if res.IsError() {
+		var e map[string]interface{}
+		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
+			log.Fatalf("Error parsing the response body: %s", err)
+		} else {
+			// Print the response status and error information.
+			log.Fatalf("[%s] %s: %s",
+				res.Status(),
+				e["error"].(map[string]interface{})["type"],
+				e["error"].(map[string]interface{})["reason"],
+			)
+		}
+	}
 }
