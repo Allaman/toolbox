@@ -1,11 +1,7 @@
 # ES-Query
 
-## Golang
+There are various methods for searching ES.
 
-`main.go` performs an Elasticsearch search query and prints the first found document.
+[Simple](simple) performs a simple search that is limited to the size of returned documents. Be aware that there is a maximum query size on ES side that you can not affect on the client side. A query that would produce more results will not return all documents!
 
-Requires `ELASTICSEARCH_URL` env variable set to the URL of your Elasticsearch. Authentication is not implemented. Pagination is not implemented
-
-## Python
-
-`search.py` performs a slightly complex search query using Elasticsearch' [pagination](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html) and dumps the result to stdout or a file.
+[Scroll](scroll) performs a scrolling search that basically paginates through all result pages and therefore overcoming the limits of a simple search.
