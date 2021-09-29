@@ -73,13 +73,11 @@ func PrintStats(json *string) {
 	}
 }
 
-// ConstructBodyFromQuery builds a valid ES search body from a string
-// from https://kb.objectrocket.com/elasticsearch/how-to-construct-elasticsearch-queries-from-a-string-using-golang-550
-func ConstructBodyFromQuery(q string, size int) *strings.Reader {
-	// Build a body string from string passed to function
-	var body = `{"query": {`
-	// Concatenate query string with string passed to method call
-	body = body + q
+// ConstructBody builds a valid ES search body
+// inspired from https://kb.objectrocket.com/elasticsearch/how-to-construct-elasticsearch-queries-from-a-string-using-golang-550
+func ConstructBody(body string, query string, size int) *strings.Reader {
+	// Concatenate body string with query string
+	body = body + query
 	// Use the strconv.Itoa() method to convert int to string
 	body = body + `}, "size": ` + strconv.Itoa(size) + `}`
 	// fmt.Println("\nquery:", query)
