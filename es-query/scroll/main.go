@@ -58,7 +58,7 @@ func printRawData(rawData []gjson.Result) {
 
 func scroll(es *elasticsearch.Client, index string, query string, size int) []gjson.Result {
 	var results []gjson.Result
-	body := aux.ConstructBodyFromQuery(query, size)
+	body := aux.ConstructBody(`{"query": {`, query, size)
 	res, err := es.Search(
 		es.Search.WithIndex(index),
 		es.Search.WithBody(body),
