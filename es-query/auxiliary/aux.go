@@ -8,7 +8,6 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -75,12 +74,12 @@ func PrintStats(json *string) {
 
 // ConstructBody builds a valid ES search body
 // inspired from https://kb.objectrocket.com/elasticsearch/how-to-construct-elasticsearch-queries-from-a-string-using-golang-550
-func ConstructBody(body string, query string, size int) *strings.Reader {
+func ConstructBody(body string) *strings.Reader {
 	// Concatenate body string with query string
-	body = body + query
+	// body = body + query
 	// Use the strconv.Itoa() method to convert int to string
-	body = body + `}, "size": ` + strconv.Itoa(size) + `}`
-	// fmt.Println("\nquery:", query)
+	// body = body + `}, "size": ` + strconv.Itoa(size) + `}`
+	// fmt.Println("\nquery:", body)
 	// Check for JSON errors
 	isValid := json.Valid([]byte(body)) // returns bool
 	// Default query is "{}" if JSON is invalid
