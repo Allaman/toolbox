@@ -12,10 +12,10 @@ func main() {
 	es := aux.NewESClient()
 
 	var index = "" // TODO:
-	var size = 100
 
 	// all documents within the last hour
-	var query = `"bool": {
+	var query = `{"query": {
+        "bool": {
             "filter": [
                 {
                 "range": {
@@ -27,21 +27,15 @@ func main() {
                     }
                 }
             ]
-        }`
-
-	// all documents in an alternative form for an query
-	// query := map[string]interface{}{
-	// 	"size": 2000,
-	// 	"query": map[string]interface{}{
-	// 		"match_all": map[string]interface{}{},
-	// 	},
-	// }
+        }},
+        "size": 1000
+    }`
 
 	if index == "" {
 		log.Fatalln("index should not be empty")
 	}
 
-	body := aux.ConstructBodyFromQuery(query, size)
+	body := aux.ConstructBody(query)
 
 	// Perform the search request.
 	res, err := es.Search(
