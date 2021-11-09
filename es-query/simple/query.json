@@ -1,0 +1,18 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "time": {
+              "format": "strict_date_optional_time",
+              "gte": "now-1m",
+              "lt": "now"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 1000
+}

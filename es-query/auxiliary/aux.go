@@ -27,7 +27,7 @@ func NewESClient() *elasticsearch.Client {
 			return d
 		},
 		Transport: &http.Transport{
-			ResponseHeaderTimeout: (time.Millisecond * 10000),
+			ResponseHeaderTimeout: (time.Millisecond * 30000),
 		},
 	}
 	es, err := elasticsearch.NewClient(cfg)
@@ -75,12 +75,6 @@ func PrintStats(json *string) {
 // ConstructBody builds a valid ES search body
 // inspired from https://kb.objectrocket.com/elasticsearch/how-to-construct-elasticsearch-queries-from-a-string-using-golang-550
 func ConstructBody(body string) *strings.Reader {
-	// Concatenate body string with query string
-	// body = body + query
-	// Use the strconv.Itoa() method to convert int to string
-	// body = body + `}, "size": ` + strconv.Itoa(size) + `}`
-	// fmt.Println("\nquery:", body)
-	// Check for JSON errors
 	isValid := json.Valid([]byte(body)) // returns bool
 	// Default query is "{}" if JSON is invalid
 	if !isValid {
@@ -95,11 +89,12 @@ func ConstructBody(body string) *strings.Reader {
 	return bodyReader
 }
 
+// CheckForESSearchResultError validates if a ES search response errored
 func CheckForESSearchResultError(res *esapi.Response) {
 	if res.IsError() {
 		var e map[string]interface{}
 		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
-			log.Fatalf("Error parsing the response body: %s", err)
+			log.Fatalf("Error parsing the response body: %s with statuscode %d", err, res.StatusCode)
 		} else {
 			// Print the response status and error information.
 			log.Fatalf("[%s] %s: %s",

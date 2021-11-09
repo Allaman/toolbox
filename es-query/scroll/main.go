@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"time"
 
@@ -12,36 +13,18 @@ import (
 
 func main() {
 	es := aux.NewESClient()
+	bQuery, err := ioutil.ReadFile("query.json")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var index = "" // TODO:
-	var size = 1000
-
-	var query = `"bool": {
-            "filter": [
-                {
-                    "match_phrase": {
-                        "kubernetes.container_name": {
-                            "query": "FooBar"
-                        }
-                    }
-                },
-                {
-                "range": {
-                    "time": {
-                        "format": "strict_date_optional_time",
-                        "gte": "2021-09-21T00:00:00.000Z",
-                        "lte": "2021-09-21T23:59:59.000Z"
-                        }
-                    }
-                }
-            ]
-        }`
 
 	if index == "" {
 		log.Fatalln("index should not be empty")
 	}
 
-	rawData := scroll(es, index, query, size)
+	rawData := scroll(es, index, string(bQuery))
 	printRawData(rawData)
 
 }
@@ -56,9 +39,9 @@ func printRawData(rawData []gjson.Result) {
 	}
 }
 
-func scroll(es *elasticsearch.Client, index string, query string, size int) []gjson.Result {
+func scroll(es *elasticsearch.Client, index string, query string) []gjson.Result {
 	var results []gjson.Result
-	body := aux.ConstructBody(`{"query": {`, query, size)
+	body := aux.ConstructBody(query)
 	res, err := es.Search(
 		es.Search.WithIndex(index),
 		es.Search.WithBody(body),

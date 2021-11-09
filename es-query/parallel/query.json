@@ -1,0 +1,19 @@
+{
+  "slice": { "field": "@timestamp", "id": "%d", "max": "%d" },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "time": {
+              "format": "strict_date_optional_time",
+              "gte": "now-1h",
+              "lt": "now"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 1000
+}

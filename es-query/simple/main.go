@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"io/ioutil"
 	"log"
 
 	aux "github.com/allaman/toolbox/es-query/auxiliary"
@@ -10,32 +11,17 @@ import (
 
 func main() {
 	es := aux.NewESClient()
-
+	bQuery, err := ioutil.ReadFile("query.json")
+	if err != nil {
+		log.Fatal(err)
+	}
 	var index = "" // TODO:
-
-	// all documents within the last hour
-	var query = `{"query": {
-        "bool": {
-            "filter": [
-                {
-                "range": {
-                    "time": {
-                        "format": "strict_date_optional_time",
-                        "gte":    "now-1h",
-                        "lt":     "now"
-                        }
-                    }
-                }
-            ]
-        }},
-        "size": 1000
-    }`
 
 	if index == "" {
 		log.Fatalln("index should not be empty")
 	}
 
-	body := aux.ConstructBody(query)
+	body := aux.ConstructBody(string(bQuery))
 
 	// Perform the search request.
 	res, err := es.Search(
