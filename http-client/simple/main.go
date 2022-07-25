@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"time"
+
+	aux "github.com/allaman/toolbox/http-client/auxiliary"
 )
 
 var (
@@ -25,7 +26,7 @@ func get(path string) {
 		panic(err)
 	}
 	defer resp.Body.Close()
-	printResponse(resp)
+	aux.PrintResponse(resp)
 }
 
 func post(path string, body interface{}) {
@@ -38,30 +39,5 @@ func post(path string, body interface{}) {
 		panic(err)
 	}
 	defer resp.Body.Close()
-	printResponse(resp)
-}
-
-func printResponse(resp *http.Response) {
-	if resp.StatusCode == 200 {
-		b, err := io.ReadAll(resp.Body)
-		if err != nil {
-			panic(err)
-		}
-		prettyJSON, err := formatJSON(b)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("%s\n", prettyJSON)
-	} else {
-		fmt.Printf("Status is: %s\n", resp.Status)
-	}
-}
-
-func formatJSON(data []byte) ([]byte, error) {
-	var out bytes.Buffer
-	err := json.Indent(&out, data, "", "    ")
-	if err == nil {
-		return out.Bytes(), err
-	}
-	return data, nil
+	aux.PrintResponse(resp)
 }

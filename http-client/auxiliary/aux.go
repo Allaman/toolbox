@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func printResponse(resp *http.Response) {
+func PrintResponse(resp *http.Response) {
 	if resp.StatusCode == 200 {
 		b, err := io.ReadAll(resp.Body)
 		if err != nil {
