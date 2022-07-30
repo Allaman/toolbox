@@ -22,6 +22,10 @@ Use at your own risk. No sophisticated code. No scope on usability and UX. 🙂
 
 [ES-query](es-query) performs Elasticsearch search queries via Python and Golang.
 
+## go-mail
+
+[go-mail](go-mail) illustrates working with IMAP.
+
 ## Golang
 
 [Golang](golang) contains some general Go code I use in my tools.
