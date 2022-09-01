@@ -11,4 +11,6 @@ simple-cobra completion zsh > $HOME/.shell/zsh-completions/src/_simple-cobra
 # reload / restart shell
 ```
 
+Refer to the [cobra-docs](https://github.com/spf13/cobra/blob/main/shell_completions.md) for other shells and requirements.
+
 ![](./screen.png)
