@@ -8,10 +8,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var (
-	// Log is the global Logger instance
-	Log *Logger
-)
+// Log is the global Logger instance
+var Log *Logger
 
 // Logger containing a zerolog logger ptr
 type Logger struct {
@@ -21,6 +19,7 @@ type Logger struct {
 // NewLogger creates a zerolog logger instance
 func NewLogger(level zerolog.Level) *Logger {
 	zerolog.SetGlobalLevel(level)
+	// TODO: Stderr not always good...? info level for instance
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 	return &Logger{logger: &logger}
 }
