@@ -109,7 +109,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return resp, err
+	return resp, nil
 }
 
 func (c *Client) reqWithTracing(req *http.Request) *http.Request {
