@@ -8,6 +8,10 @@
 
 [CLI](cli) contains useful snippets for creating CLIs
 
+## gitlab-http
+
+[glab-api-http](glab-api-http)
+
 ## manifest-splitter
 
 [Manifest-splitter](#manifest-splitter) splits a file with multiple YAML documents consisting of Kubernetes manifest into one file for each `kind`
