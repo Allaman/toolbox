@@ -10,7 +10,7 @@
 
 ## gitlab-http
 
-[glab-api-http](glab-api-http)
+[glab-api-http](glab-api-http) demonstrates Gitlab API calls
 
 ## manifest-splitter
 
