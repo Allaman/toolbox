@@ -14,8 +14,8 @@
 
 ## manifest-splitter
 
-[Manifest-splitter](#manifest-splitter) splits a file with multiple YAML documents consisting of Kubernetes manifest into one file for each `kind`
+[Manifest-splitter](manifest-splitter) splits a file with multiple YAML documents consisting of Kubernetes manifest into one file for each `kind`
 
 ## postgres-connection
 
-[Postgres-connection](#postgres-connection) to verify a working connection to a Postgres database
+[Postgres-connection](postgres-connection) to verify a working connection to a Postgres database
