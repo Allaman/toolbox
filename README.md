@@ -30,6 +30,10 @@ Use at your own risk. No sophisticated code. No scope on usability and UX. 🙂
 
 [Golang](golang) contains some general Go code I use in my tools.
 
+## Python
+
+[Python](python) contains some general Python code I use in my tools.
+
 ## HTTP-Client
 
 [HTTP-Client](http-client) a collection of different implementations of HTTP Clients
