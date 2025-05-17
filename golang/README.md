@@ -19,3 +19,17 @@
 ## postgres-connection
 
 [Postgres-connection](postgres-connection) to verify a working connection to a Postgres database
+
+## tcp-echo-server
+
+[TCO-Echo-Server](tcp-echo-erver) runs the most basic TCP server responding with the query.
+
+```sh
+go run .
+```
+
+In another terminal:
+
+```sh
+echo "hello" | nc localhost 8080
+```
