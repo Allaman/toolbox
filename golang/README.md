@@ -20,9 +20,9 @@
 
 [Postgres-connection](postgres-connection) to verify a working connection to a Postgres database
 
-## tcp-echo-server
+## echo-server
 
-[TCO-Echo-Server](tcp-echo-erver) runs the most basic TCP server responding with the query.
+[Echo-Server](echo-server) runs a http and TCP echo server
 
 ```sh
 go run .
@@ -32,4 +32,5 @@ In another terminal:
 
 ```sh
 echo "hello" | nc localhost 8080
+curl -X POST -d "foo" localhost:8081
 ```
