@@ -16,42 +16,46 @@ var httpAddr = "127.0.0.1:8081"
 
 func handleConn(conn net.Conn) {
 	defer conn.Close()
+	clientIP := conn.RemoteAddr().String()
 	reader := bufio.NewReader(conn)
 	for {
 		bytes, err := reader.ReadBytes(byte('\n'))
 		if err != nil {
 			if err == io.EOF {
-				slog.Info(fmt.Sprintf("TCP connection closed by client %s", conn.RemoteAddr()))
+				slog.Info("TCP connection closed by client", "source_ip", clientIP)
 				return
 			}
 			// Log the error but don't exit - just close this connection
-			slog.Warn(fmt.Sprintf("TCP read error from %s: %s", conn.RemoteAddr(), err.Error()))
+			slog.Warn("TCP read error", "source_ip", clientIP, "error", err.Error())
 			return
 		}
 		_, writeErr := conn.Write(bytes)
 		if writeErr != nil {
-			slog.Warn(fmt.Sprintf("TCP write error to %s: %s", conn.RemoteAddr(), writeErr.Error()))
+			slog.Warn("TCP write error", "source_ip", clientIP, "error", writeErr.Error())
 			return
 		}
-		slog.Info(fmt.Sprintf("Echoed data to TCP client %s", conn.RemoteAddr()))
+		slog.Info("Echoed data to TCP client", "source_ip", clientIP)
 	}
 }
 
 func echoHandler(w http.ResponseWriter, r *http.Request) {
-	slog.Info(fmt.Sprintf("HTTP request from %s: %s %s", r.RemoteAddr, r.Method, r.URL.Path))
+	clientIP := r.RemoteAddr
+	slog.Info("HTTP request received", "source_ip", clientIP, "method", r.Method, "path", r.URL.Path)
 
 	if r.Method == http.MethodPost {
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
+			slog.Warn("Error reading request body", "source_ip", clientIP, "error", err.Error())
 			http.Error(w, "Error reading request body", http.StatusBadRequest)
 			return
 		}
 		w.Header().Set("Content-Type", "text/plain")
 		w.Write(body)
-		slog.Info(fmt.Sprintf("Echoed %d bytes to %s", len(body), r.RemoteAddr))
+		slog.Info("Echoed data to HTTP client", "source_ip", clientIP, "bytes", len(body))
 	} else {
 		w.Header().Set("Content-Type", "text/plain")
 		fmt.Fprintf(w, "Echo server is running. Send POST request to echo content.\n")
+		slog.Info("Served HTTP info page", "source_ip", clientIP)
 	}
 }
 
@@ -60,20 +64,21 @@ func startTCPServer(wg *sync.WaitGroup) {
 
 	listener, err := net.Listen("tcp", tcpAddr)
 	if err != nil {
-		slog.Error(fmt.Sprintf("TCP server error: %s", err.Error()))
+		slog.Error("TCP server error", "error", err.Error())
 		os.Exit(1)
 	}
 	defer listener.Close()
 
-	slog.Info(fmt.Sprintf("TCP server listening on: %s", tcpAddr))
+	slog.Info("TCP server listening", "address", tcpAddr)
 
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			slog.Warn(fmt.Sprintf("TCP accept error: %s", err.Error()))
+			slog.Warn("TCP accept error", "error", err.Error())
 			continue
 		}
-		slog.Info(fmt.Sprintf("Accepting TCP connection from %s", conn.RemoteAddr()))
+		clientIP := conn.RemoteAddr().String()
+		slog.Info("Accepting TCP connection", "source_ip", clientIP)
 		go handleConn(conn)
 	}
 }
@@ -84,11 +89,11 @@ func startHTTPServer(wg *sync.WaitGroup) {
 	http.HandleFunc("/", echoHandler)
 	http.HandleFunc("/echo", echoHandler)
 
-	slog.Info(fmt.Sprintf("HTTP server listening on: %s", httpAddr))
+	slog.Info("HTTP server listening", "address", httpAddr)
 
 	err := http.ListenAndServe(httpAddr, nil)
 	if err != nil {
-		slog.Error(fmt.Sprintf("HTTP server error: %s", err.Error()))
+		slog.Error("HTTP server error", "error", err.Error())
 		os.Exit(1)
 	}
 }
@@ -110,8 +115,8 @@ func main() {
 	go startHTTPServer(&wg)
 
 	slog.Info("Server started with TCP and HTTP support")
-	slog.Info(fmt.Sprintf("TCP echo server: %s", tcpAddr))
-	slog.Info(fmt.Sprintf("HTTP echo server: %s", httpAddr))
+	slog.Info("TCP echo server", "address", tcpAddr)
+	slog.Info("HTTP echo server", "address", httpAddr)
 
 	wg.Wait()
 }
